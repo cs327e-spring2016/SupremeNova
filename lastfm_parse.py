@@ -62,6 +62,8 @@ while name is not '':
 		print()
 		print()
 		print(bit_json_obj[0]['formatted_location'])
+		print(bit_json_obj[0]['formatted_datetime'])
+		print(bit_json_obj[0]['venue']['name'])
 
 
 	# when no artist is found 
