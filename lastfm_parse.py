@@ -10,7 +10,7 @@ while name is not '':
 	name = name.replace(' ','%20')
 
 	# there is some type of error with when someone types a string '. H'
-	if ("." and "H") in name:
+	if ('.' and 'H') in name:
 		name = name.replace('.','')
 
 	# calls the last.fm API 
@@ -26,7 +26,7 @@ while name is not '':
 	#print((json_obj['similarartists']['artist']))
 
 	# to check if no artist is empty 
-	if ("error" not in lfm_string) and (len(lfm_json_obj['similarartists']['artist']) != 0):
+	if ('error' not in lfm_string) and (len(lfm_json_obj['similarartists']['artist']) != 0):
 
 		# creates artist list, last artist, and artist index
 		artistList =[]
@@ -58,18 +58,26 @@ while name is not '':
 		bit_string = response2.read().decode('utf-8')
 		bit_json_obj = json.loads(bit_string)
 
+		# Parses through all of the artists venues, formatted location, formatted datetime
 
-		print()
-		print()
-		print(bit_json_obj[0]['formatted_location'])
-		print(bit_json_obj[0]['formatted_datetime'])
-		print(bit_json_obj[0]['venue']['name'])
+		if len(bit_json_obj) != 0:
+			for item in bit_json_obj :
+				print()
+				print(item['formatted_location'])
+				print(item['formatted_datetime'])
+				print(item['venue']['name'])
+				print()
+				
+		else:
+			print('There are no events for this artist')
+			print()
+		
 
 
 	# when no artist is found 
 	else:
 		print()
-		print("Similar Artists Not Found")
+		print('Similar Artists Not Found')
 		print()
 
 	# user inputs artist name
