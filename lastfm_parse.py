@@ -75,3 +75,5 @@ while name is not '':
 	# user inputs artist name
 	name = input('Input an artist name (press ENTER to quit): ')
 
+	print('done')
+
