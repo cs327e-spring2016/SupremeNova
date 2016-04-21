@@ -23,13 +23,14 @@ def artistparse():
 
 	# Continues loop until the user types quit
 	while name is not '':
+		
 		# replaces string spaces with %20 to fit API convention
 		name = name.replace(' ','%20')
 
 		# there is some type of error with when someone types a string '. H'
 		if ('.' and 'H') in name:
 			name = name.replace('.','')
-
+				
 		# calls the last.fm API 
 		lastfm_url = 'http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=&api_key=809d15fdb258f92ffd60f361dcf84feb&format=json'
 		lastfm_url = lastfm_url[:66] + (name) + lastfm_url[66:]
@@ -109,7 +110,7 @@ def artistparse():
 
 
 def main():
-	
+
 	artistparse()
 
 main()
