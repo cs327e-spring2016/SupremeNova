@@ -90,6 +90,9 @@ def artistparse():
 						print(item['formatted_datetime'])
 						print(item['venue']['name'])
 						print()
+						# print(str(item['formatted_location'].encode('utf-8')))
+						# print(str(item['formatted_datetime'].encode('utf-8')))
+						# print(item['venue']['name'].encode('utf-8'))
 						
 				else:
 					print('There are no events for this artist')
