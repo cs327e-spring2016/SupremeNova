@@ -1,5 +1,6 @@
 from urllib.request import urlopen
 import json
+import pymysql
 
 # Populates user table
 def user():
@@ -20,6 +21,12 @@ def Event():
 def artistparse():
 	# user inputs artist name
 	name = str(input('Input an artist name (press ENTER to quit): '))
+
+	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
+	cur = conn.cursor()
+
+	####################
+	w = open('testing.txt', 'w', encoding='utf-8')
 
 	# Continues loop until the user types quit
 	while name is not '':
@@ -109,6 +116,8 @@ def artistparse():
 		# user inputs artist name
 		name = input('Input an artist name (press ENTER to quit): ')
 
+	cur.close()
+	conn.close()
 
 
 
