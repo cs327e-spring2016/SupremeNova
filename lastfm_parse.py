@@ -1,6 +1,10 @@
 from urllib.request import urlopen
 import json
+<<<<<<< HEAD
 import pymysql
+=======
+#import urllib.parse
+>>>>>>> 1b9d89fe83e64c92cdfc68295febea566ef2c25b
 
 # Populates user table
 def user():
@@ -69,18 +73,20 @@ def artistparse():
 			print()
 
 			# Scraping the Bandsintown API
+			# COMMENT REMOVE WHILE loop if you URL encode
 			i = 0
-			#chrs = set('àáâãäåæ',)
 			while i < len(artistList):
 				artistList[i] = artistList[i].replace(' ','%20')
 				artistList[i] = artistList[i].replace('/','%252F')
-				#artistList[i] = artistList[i].replace('','u')
 				# insert 
 				i += 1
 
 			# Calling bandsintown url (bit = BandsinTown)
+			# COMMENT
+			# URL encode this to remove errors 
 			for band in artistList:
 				bit_url = 'http://api.bandsintown.com/artists//events.json?api_version=2.0&app_id=BandAdvocate'
+				
 				bit_url = bit_url[:35] + str(band) + bit_url[35:]
 				response2 = urlopen(bit_url)
 
@@ -94,6 +100,7 @@ def artistparse():
 					for item in bit_json_obj :
 						print()
 						print(item['formatted_location'])
+						print(item['datetime'])
 						print(item['formatted_datetime'])
 						print(item['venue']['name'])
 						print()
