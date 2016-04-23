@@ -12,24 +12,38 @@ def user():
 	pass 
 
 # Populates original band list table
-def bandList(bandName, genre):
+def bandList(bandName, genre, cur, conn):
 	#Primary key is bandID
-	pass
+	cur.execute("INSERT INTO bandList (bandName, genre) VALUES (\"%s\",\"%s\")", (bandName,genre))
 
 # Populates similar band list table
-def similarBands(bandName, genre, SimilarBandID):
-	pass
+def similarBands(oriBand, bandName, genre, similarBandID, cur, conn):
+	#primary key is bandID
+	#foreign key is similarBandID
+
+
+	####?????????###
+	cur.execute("INSERT INTO similarBands (bandName, genre, similarBandID) VALUES (\"%s\",\"%s\"), (SELECT bandID FROM bandList where NAME = '\"%s\"')", (bandName,genre,oriBand))
 
 # Populates event list table 
-def Event(location, date, venue, bandID):
+def Event(state, city, date, time, venue, bandID, cur, conn):
+	#primary key is eventID
+	#foreign key is bandID
 	pass
 
-def artistparse():
+def artistparse(conn, cur):
+
+	# cur.execute("DESCRIBE event")
+	# print ("before")
+	# print(cur.fetchone())
+	# print("after")
+
+
 	# user inputs artist name
 	name = str(input('Input an artist name (press ENTER to quit): '))
 
-	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
-	cur = conn.cursor()
+	# conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
+	# cur = conn.cursor()
 
 	####################
 	# w = open('testing.txt', 'w', encoding='utf-8')
@@ -144,14 +158,27 @@ def artistparse():
 		# user inputs artist name
 		name = input('Input an artist name (press ENTER to quit): ')
 
-	cur.close()
-	conn.close()
-
 
 
 def main():
 
-	artistparse()
+	#establish a connection with Herbert's mysql (only work's with Herbert)
+	#ERNIE: if you want to test using your own computer you will need to create a connection
+		#Make sure to also create the same database name (supremenova)
+		#Make sure to create the same tables with the same entities (sent picture on facebook)
+	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
+	# conn = pymysql.connect(host='127.0.0.1', user='root', passwd='erniestuff', db='mysql')
+
+	#Create a cursor
+	cur = conn.cursor()
+	cur.execute("USE supremenova")
+
+	artistparse(conn, cur)
+
+	#Close connection
+	cur.close()
+	conn.close()
+
 
 main()
 
