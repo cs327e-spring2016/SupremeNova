@@ -1,25 +1,27 @@
 from urllib.request import urlopen
 import json
-<<<<<<< HEAD
 import pymysql
-=======
-#import urllib.parse
->>>>>>> 1b9d89fe83e64c92cdfc68295febea566ef2c25b
+
+# <<<<<<< HEAD
+# =======
+# #import urllib.parse
+# >>>>>>> 1b9d89fe83e64c92cdfc68295febea566ef2c25b
 
 # Populates user table
 def user():
 	pass 
 
 # Populates original band list table
-def bandList():
+def bandList(bandName, genre):
+	#Primary key is bandID
 	pass
 
 # Populates similar band list table
-def similarBands():
+def similarBands(bandName, genre, SimilarBandID):
 	pass
 
 # Populates event list table 
-def Event():
+def Event(location, date, venue, bandID):
 	pass
 
 def artistparse():
@@ -30,7 +32,7 @@ def artistparse():
 	cur = conn.cursor()
 
 	####################
-	w = open('testing.txt', 'w', encoding='utf-8')
+	# w = open('testing.txt', 'w', encoding='utf-8')
 
 	# Continues loop until the user types quit
 	while name is not '':
@@ -73,20 +75,18 @@ def artistparse():
 			print()
 
 			# Scraping the Bandsintown API
-			# COMMENT REMOVE WHILE loop if you URL encode
 			i = 0
+			#chrs = set('àáâãäåæ',)
 			while i < len(artistList):
 				artistList[i] = artistList[i].replace(' ','%20')
 				artistList[i] = artistList[i].replace('/','%252F')
+				#artistList[i] = artistList[i].replace('','u')
 				# insert 
 				i += 1
 
 			# Calling bandsintown url (bit = BandsinTown)
-			# COMMENT
-			# URL encode this to remove errors 
 			for band in artistList:
 				bit_url = 'http://api.bandsintown.com/artists//events.json?api_version=2.0&app_id=BandAdvocate'
-				
 				bit_url = bit_url[:35] + str(band) + bit_url[35:]
 				response2 = urlopen(bit_url)
 
@@ -99,14 +99,35 @@ def artistparse():
 				if len(bit_json_obj) != 0:
 					for item in bit_json_obj :
 						print()
-						print(item['formatted_location'])
-						print(item['datetime'])
-						print(item['formatted_datetime'])
+
+						#print city
+						formatedLocation = item['formatted_location']
+						city = ''
+						i = 0
+						while (formatedLocation[i] != ',' ):
+							city += formatedLocation[i]
+							i += 1
+						print (city)
+
+						#print state
+						state = formatedLocation[-2:]
+						print (state)
+
+						#print venue
 						print(item['venue']['name'])
+
+						#print date and time
+						datetime = item['datetime']
+						date = datetime[0:10]
+						time = datetime[11:]
+						print(date)
+						print(time)
 						print()
-						# print(str(item['formatted_location'].encode('utf-8')))
-						# print(str(item['formatted_datetime'].encode('utf-8')))
+
+						# print(str(type(item['formatted_location'].encode('utf-8'))))
+						# print(type(item['formatted_datetime'].encode('utf-8')))
 						# print(item['venue']['name'].encode('utf-8'))
+						# print()
 						
 				else:
 					print('There are no events for this artist')
