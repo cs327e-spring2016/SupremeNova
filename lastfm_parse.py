@@ -11,25 +11,39 @@ import pymysql
 def user():
 	pass 
 
+#WORKS
 # Populates original band list table
 def bandList(bandName, genre, cur, conn):
 	#Primary key is bandID
-	cur.execute("INSERT INTO bandList (bandName, genre) VALUES (\"%s\",\"%s\")", (bandName,genre))
+
+	cur.execute("INSERT INTO bandList (bandName, genre) VALUES (%s,%s)", (bandName,genre))
+	cur.connection.commit()
+	print (cur.fetchone())
+
 
 # Populates similar band list table
-def similarBands(oriBand, bandName, genre, similarBandID, cur, conn):
+def similarBands(oriBand, bandName, genre, cur, conn):
 	#primary key is bandID
 	#foreign key is similarBandID
 
+	# cur.execute("INSERT INTO similarBands (bandName, genre, similarBandID) VALUES (%s,%s), (SELECT bandID FROM bandList where NAME = %s)", (bandName,genre,oriBand))
 
-	####?????????###
-	cur.execute("INSERT INTO similarBands (bandName, genre, similarBandID) VALUES (\"%s\",\"%s\"), (SELECT bandID FROM bandList where NAME = '\"%s\"')", (bandName,genre,oriBand))
+	cur.execute("INSERT INTO similarBands (bandName, genre, similarBandID) VALUES (%s,%s, SELECT bandID FROM bandList WHERE NAME = %s)", (bandName, genre, oriBand))
+
+	cur.connection.commit()
+	print(cur.fetchone())
+
 
 # Populates event list table 
-def Event(state, city, date, time, venue, bandID, cur, conn):
+def event(oriBand, state, city, date, time, venue, cur, conn):
 	#primary key is eventID
 	#foreign key is bandID
-	pass
+
+	cur.execute("INSERT INTO event (state, city, date, time, venue, bandID) VALUES (%s,%s,%s,%s,%s, SELECT bandID FROM bandList WHERE NAME = %s)", (state, city, date, time, venue, oriBand))
+
+	cur.connection.commit()
+	print(cur.fetchone())
+	
 
 def artistparse(conn, cur):
 
@@ -159,7 +173,6 @@ def artistparse(conn, cur):
 		name = input('Input an artist name (press ENTER to quit): ')
 
 
-
 def main():
 
 	#establish a connection with Herbert's mysql (only work's with Herbert)
@@ -173,7 +186,14 @@ def main():
 	cur = conn.cursor()
 	cur.execute("USE supremenova")
 
-	artistparse(conn, cur)
+	# artistparse(conn, cur)
+
+	bandList('passion pit','rock', cur, conn)
+	# similarBands('passion pit', 'bandawesome', 'folk', cur, conn)
+	# bandList('bandawesome', 'folk', cur, conn)
+	# event('bandawesome', 'TX', 'Austin', '2017-08-10', '15:30:00', 'Emos', cur, conn)
+
+
 
 	#Close connection
 	cur.close()
