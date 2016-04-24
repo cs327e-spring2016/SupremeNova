@@ -11,27 +11,47 @@ import pymysql
 def user():
 	pass 
 
-#WORKS
+
 # Populates original band list table
 def bandList(bandName, genre, cur, conn):
-	#Primary key is bandID
 
-	cur.execute("INSERT INTO bandList (bandName, genre) VALUES (%s,%s)", (bandName,genre))
-	cur.connection.commit()
-	print (cur.fetchone())
+	cur.execute("SELECT bandID FROM bandList WHERE bandName = %s", (bandName))
+
+	x = cur.fetchone()
+
+	# If band not in bandlist, add the band
+	if (x == None):
+		cur.execute("INSERT INTO bandList (bandName, genre) VALUES (%s,%s)", (bandName,genre))
+		cur.connection.commit()
+		print(bandName + ":added")
+
+	# If band is already in bandlist, do NOT add the band (prevents duplicates)
+	else:
+		print (bandName + ":Not added, already exists")
+
 
 
 # Populates similar band list table
 def similarBands(oriBand, bandName, genre, cur, conn):
-	#primary key is bandID
-	#foreign key is similarBandID
 
-	# cur.execute("INSERT INTO similarBands (bandName, genre, similarBandID) VALUES (%s,%s), (SELECT bandID FROM bandList where NAME = %s)", (bandName,genre,oriBand))
+	# Get the original band ID to this similar band
+	cur.execute("SELECT bandID FROM bandList WHERE bandName = %s", (oriBand))
+	x = cur.fetchone()
+	originalBand = x[0]
 
-	cur.execute("INSERT INTO similarBands (bandName, genre, similarBandID) VALUES (%s,%s, SELECT bandID FROM bandList WHERE NAME = %s)", (bandName, genre, oriBand))
+	# Get the original band name to this similar band 
+	cur.execute("SELECT bandName FROM bandList WHERE bandName = %s", (oriBand))
+	y = cur.fetchone()
+	originalBandName = y[0]
+
+	# add the similar band to the similar band table
+	cur.execute("INSERT INTO similarBand (bandName, genre, similarBandID, similarBandName) VALUES (%s,%s,%s,%s)", (bandName, genre, originalBand, originalBandName))
 
 	cur.connection.commit()
-	print(cur.fetchone())
+
+	# Add the similar band to bandlist, all bands will be listed in bandlist
+	bandList(bandName, genre, cur, conn)
+
 
 
 # Populates event list table 
@@ -39,10 +59,25 @@ def event(oriBand, state, city, date, time, venue, cur, conn):
 	#primary key is eventID
 	#foreign key is bandID
 
-	cur.execute("INSERT INTO event (state, city, date, time, venue, bandID) VALUES (%s,%s,%s,%s,%s, SELECT bandID FROM bandList WHERE NAME = %s)", (state, city, date, time, venue, oriBand))
+	cur.execute("SELECT bandID FROM bandList WHERE bandName = %s", (oriBand))
+	x = cur.fetchone()
+	originalBand = x[0]
+
+	cur.execute("SELECT bandName FROM bandList WHERE bandName = %s", (oriBand))
+	y = cur.fetchone()
+	originalBandName = y[0]
+
+
+
+	### Create a boolean to make sure events are only added one based on the date, time, venue, bandName
+	cur.execute("INSERT INTO event (state, city, date, time, venue, bandID, bandName) VALUES (%s,%s,%s,%s,%s,%s,%s)", (state, city, date, time, venue, originalBand, originalBandName))
+
 
 	cur.connection.commit()
-	print(cur.fetchone())
+	# print("event")
+	# print(cur.fetchone())
+	# print("done event")
+	# print()
 	
 
 def artistparse(conn, cur):
@@ -188,11 +223,15 @@ def main():
 
 	# artistparse(conn, cur)
 
-	bandList('passion pit','rock', cur, conn)
-	# similarBands('passion pit', 'bandawesome', 'folk', cur, conn)
+	# bandList('band2','rock', cur, conn)
+	# similarBands('band2', 'bandawesome', 'folk', cur, conn)
 	# bandList('bandawesome', 'folk', cur, conn)
 	# event('bandawesome', 'TX', 'Austin', '2017-08-10', '15:30:00', 'Emos', cur, conn)
-
+	# cur.execute("SELECT bandID FROM bandList WHERE bandName = 'passion pit' ")
+	# print("here is fetchone")
+	# x = cur.fetchone()
+	# if (x == None):
+	# 	print ("worked")
 
 
 	#Close connection
