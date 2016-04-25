@@ -64,17 +64,37 @@ def showArtist(cur, conn):
 
 			details = cur.fetchone()
 
+
 			eventDate = details[1]
-			try:
-				print (eventDate.strftime('%m/%d/%Y'))
-				print (str(details[2]))
-				print ("venue: "+ details[3])
-				print ("Location: " + details[4] + ", " + details[5])
-				print ()
-			except:
-				print("some error")
-				print()
-				continue
+
+			if (eventDate == None):
+				print ("nothing")
+			else:
+				try:
+					if (details[1] == None):
+						print ("No date listed")
+					else:
+						print (eventDate.strftime('%m/%d/%Y'))
+
+					if (details[2] == None):
+						print ("No time listed")
+					else:
+						print (str(details[2]))
+
+					if (details[3]== None):
+						print ("No venue listed")
+					else:
+						print ("venue: "+ details[3])
+
+					if (details[4] == None and details[5] == None):
+						print ("No location listed")
+					else:
+						print ("Location: " + details[4] + ", " + details[5])
+					print ()
+				except:
+					print("some error")
+					print()
+				# continue
 			eventList = cur.fetchone()
 
 
