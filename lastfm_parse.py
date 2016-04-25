@@ -195,9 +195,9 @@ def artistparse():
 
 				# for function bandList for the original band
 				if len(lfm_genre_json) != 0:
-					print(str(lfm_genre_json['toptags']['tag'][0]['name']))
-					#bandList(str(unquote(band)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
-					#similarBands(str(unquote(name)), str(unquote(band)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
+					#print(str(lfm_genre_json['toptags']['tag'][0]['name']))
+					bandList(str(unquote(band)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
+					similarBands(str(unquote(name)), str(unquote(band)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
 				else:
 					#bandList(str(unquote(band)), 'None', cur, conn)
 					#similarBands(str(unquote(name)), str(unquote(band)), 'None', cur, conn)
@@ -230,7 +230,7 @@ def artistparse():
 						print(date)
 						print(time)
 						print()
-						#event(str(unquote(band), str(state), str(city), str(date), str(time), str(item['venue']['name']), cur, conn)
+						#event(str(unquote(band)), str(state), str(city), str(date), str(time), str(item['venue']['name']), cur, conn)
 
 						# print(str(type(item['formatted_location'].encode('utf-8'))))
 						# print(type(item['formatted_datetime'].encode('utf-8')))
