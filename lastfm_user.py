@@ -40,6 +40,14 @@ def showArtist(cur, conn):
 		x = cur.fetchone()
 
 
+	number = int(input("Select bandID: "))
+	while ((number > count) and (type(number) != 'int')):
+		print ("bandID of range")
+		number = int(input("Select bandID:"))
+
+	print("Number selected is" + str(number))
+
+
 	
 	# print ("show artist function")
 
