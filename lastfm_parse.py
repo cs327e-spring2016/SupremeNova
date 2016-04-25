@@ -3,10 +3,21 @@ import json
 import pymysql
 from urllib.parse import quote
 from urllib.parse import unquote
-# <<<<<<< HEAD
-# =======
-# #import urllib.parse
-# >>>>>>> 1b9d89fe83e64c92cdfc68295febea566ef2c25b
+
+
+#Description: This code is used to populate the database (Herbert's computer) using a user input on what band they want
+
+
+
+#########################################################
+#Created all tables outside of pymysql and within mysql 
+
+#Three tables available: bandlist, similarbands, event
+#bandList: bandID, name, genre 
+#similarband: bandID, bandName, genre, similarBandID, similarBandName
+#event: eventID, state, city, venue, date, time, bandID, bandName
+
+#########################################################
 
 
 # Populates user table
