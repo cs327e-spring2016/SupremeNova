@@ -14,8 +14,7 @@ def anything (cur, conn):
 				break
 			else:
 				cur.execute(x)
-				# print(cur.description())
-				# print(cur.fetchone())
+
 				show = cur.fetchone()
 				print (show)
 
@@ -35,7 +34,7 @@ def showArtist(cur, conn):
 	cur.execute("SELECT bandName FROM bandList")
 	x = cur.fetchone()
 	count = 1
-	while x is not None:
+	while x != None:
 		print (str(count)+ ":" + x[0])
 		count += 1
 		x = cur.fetchone()
@@ -76,7 +75,7 @@ def main ():
 		if (start == "1"):
 			anything(cur,conn)
 		elif(start == "2"):
-			pass
+			showArtist(cur,conn)
 
 
 
