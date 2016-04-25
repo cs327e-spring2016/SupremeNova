@@ -2,7 +2,9 @@ from urllib.request import urlopen
 import json
 import pymysql
 
+#Description: This code is what the user will use to query through the database
 
+# Lets user use their own query 
 def anything (cur, conn):
 
 	notKeep = True
@@ -29,6 +31,7 @@ def anything (cur, conn):
 
 	
 
+# User picks band from list to display events for the artist selected
 def showArtist(cur, conn):
 
 	cur.execute("SELECT bandName FROM bandList")
