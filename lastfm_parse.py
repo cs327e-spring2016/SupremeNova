@@ -1,11 +1,12 @@
 from urllib.request import urlopen
 import json
 import pymysql
-
+from urllib.parse import quote
 # <<<<<<< HEAD
 # =======
 # #import urllib.parse
 # >>>>>>> 1b9d89fe83e64c92cdfc68295febea566ef2c25b
+
 
 # Populates user table
 def user():
@@ -80,7 +81,8 @@ def event(oriBand, state, city, date, time, venue, cur, conn):
 	# print()
 	
 
-def artistparse(conn, cur):
+#def artistparse(conn, cur):
+def artistparse():
 
 	# cur.execute("DESCRIBE event")
 	# print ("before")
@@ -101,11 +103,12 @@ def artistparse(conn, cur):
 	while name is not '':
 		
 		# replaces string spaces with %20 to fit API convention
-		name = name.replace(' ','%20')
+		name = quote(name)
 
 		# there is some type of error with when someone types a string '. H'
 		if ('.' and 'H') in name:
 			name = name.replace('.','')
+
 				
 		# calls the last.fm API 
 		lastfm_url = 'http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=&api_key=809d15fdb258f92ffd60f361dcf84feb&format=json'
@@ -139,11 +142,12 @@ def artistparse(conn, cur):
 
 			# Scraping the Bandsintown API
 			i = 0
-			#chrs = set('àáâãäåæ',)
 			while i < len(artistList):
-				artistList[i] = artistList[i].replace(' ','%20')
-				artistList[i] = artistList[i].replace('/','%252F')
+				artistList[i] = quote(str(artistList[i]))
+				#artistList[i] = artistList[i].replace(' ','%20')
+				#artistList[i] = artistList[i].replace('/','%252F')
 				#artistList[i] = artistList[i].replace('','u')
+
 				# insert 
 				i += 1
 
@@ -214,14 +218,14 @@ def main():
 	#ERNIE: if you want to test using your own computer you will need to create a connection
 		#Make sure to also create the same database name (supremenova)
 		#Make sure to create the same tables with the same entities (sent picture on facebook)
-	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
+	#conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
 	# conn = pymysql.connect(host='127.0.0.1', user='root', passwd='erniestuff', db='mysql')
 
 	#Create a cursor
-	cur = conn.cursor()
-	cur.execute("USE supremenova")
+	#cur = conn.cursor()
+	#cur.execute("USE supremenova")
 
-	# artistparse(conn, cur)
+	artistparse()
 
 	# bandList('band2','rock', cur, conn)
 	# similarBands('band2', 'bandawesome', 'folk', cur, conn)
@@ -235,8 +239,8 @@ def main():
 
 
 	#Close connection
-	cur.close()
-	conn.close()
+	#cur.close()
+	#conn.close()
 
 
 main()
