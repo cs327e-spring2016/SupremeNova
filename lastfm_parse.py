@@ -2,6 +2,7 @@ from urllib.request import urlopen
 import json
 import pymysql
 from urllib.parse import quote
+from urllib.parse import unquote
 # <<<<<<< HEAD
 # =======
 # #import urllib.parse
@@ -119,8 +120,23 @@ def artistparse():
 		lfm_string = response.read().decode('utf-8')
 		lfm_json_obj = json.loads(lfm_string)
 
-		# error checking
-		#print((json_obj['similarartists']['artist']))
+
+		# calls the last.fm genre API 
+		lastfm_genre = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&artist=&api_key=809d15fdb258f92ffd60f361dcf84feb&format=json'
+		lastfm_genre = lastfm_genre[:66] + (name) + lastfm_genre[66:]
+		resp_genre = urlopen(lastfm_genre)
+
+		# converts bytes to string type and string type to dict
+		lfm_genre = resp_genre.read().decode('utf-8')
+		lfm_genre_json = json.loads(lfm_genre)
+
+		'''
+		# for function bandList for the original band
+		if len(lfm_genre_json) != 0:
+			#bandList(str(unquote(name)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
+		else:
+			#bandList(str(unquote(name)), 'None', cur, conn)
+		'''
 
 		# to check if no artist is empty 
 		if ('error' not in lfm_string) and (len(lfm_json_obj['similarartists']['artist']) != 0):
@@ -147,6 +163,7 @@ def artistparse():
 				#artistList[i] = artistList[i].replace(' ','%20')
 				#artistList[i] = artistList[i].replace('/','%252F')
 				#artistList[i] = artistList[i].replace('','u')
+				#print(artistList[i])
 
 				# insert 
 				i += 1
@@ -161,8 +178,31 @@ def artistparse():
 				bit_string = response2.read().decode('utf-8')
 				bit_json_obj = json.loads(bit_string)
 
+
 				# Parses through all of the artists venues, formatted location, formatted datetime
-				print(band)
+				print(str(unquote(band)))
+				
+				'''
+				# calls the last.fm GENRE API 
+				lastfm_genre = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&artist=&api_key=809d15fdb258f92ffd60f361dcf84feb&format=json'
+				lastfm_genre = lastfm_genre[:66] + str(band) + lastfm_genre[66:]
+				resp_genre = urlopen(lastfm_genre)
+
+				# converts bytes to string type and string type to dict
+				lfm_genre = resp_genre.read().decode('utf-8')
+				lfm_genre_json = json.loads(lfm_genre)
+
+
+				# for function bandList for the original band
+				if len(lfm_genre_json) != 0:
+					print(str(lfm_genre_json['toptags']['tag'][0]['name']))
+					#bandList(str(unquote(band)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
+					#similarBands(str(unquote(name)), str(unquote(band)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
+				else:
+					#bandList(str(unquote(band)), 'None', cur, conn)
+					#similarBands(str(unquote(name)), str(unquote(band)), 'None', cur, conn)
+					print("found nothing")
+				'''
 				if len(bit_json_obj) != 0:
 					for item in bit_json_obj :
 						print()
@@ -190,6 +230,7 @@ def artistparse():
 						print(date)
 						print(time)
 						print()
+						#event(str(unquote(band), str(state), str(city), str(date), str(time), str(item['venue']['name']), cur, conn)
 
 						# print(str(type(item['formatted_location'].encode('utf-8'))))
 						# print(type(item['formatted_datetime'].encode('utf-8')))
@@ -218,19 +259,23 @@ def main():
 	#ERNIE: if you want to test using your own computer you will need to create a connection
 		#Make sure to also create the same database name (supremenova)
 		#Make sure to create the same tables with the same entities (sent picture on facebook)
+	'''
 	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
+	'''
 	# conn = pymysql.connect(host='127.0.0.1', user='root', passwd='erniestuff', db='mysql')
 
 	#Create a cursor
+	'''
 	cur = conn.cursor()
 	cur.execute("USE supremenova")
-
-	# artistparse()
-
+	'''
+	artistparse()
+	'''
 	bandList('band2','rock', cur, conn)
 	similarBands('band2', 'bandawesome', 'folk', cur, conn)
 	bandList('bandawesome', 'folk', cur, conn)
 	event('bandawesome', 'TX', 'Austin', '2017-08-10', '15:30:00', 'Emos', cur, conn)
+	'''
 	# cur.execute("SELECT bandID FROM bandList WHERE bandName = 'passion pit' ")
 	# print("here is fetchone")
 	# x = cur.fetchone()
