@@ -239,7 +239,7 @@ def artistparse(cur, conn):
 						# print(date)
 						# print(time)
 						# print()
-						event(str(unquote(band)), state, city, date, time, venue, cur, conn)
+						event(unquote(band), state, city, date, time, venue, cur, conn)
 						# event(str(unquote(band)), str(state), str(city), str(date), str(time), str(item['venue']['name']), cur, conn)
 
 						# print(str(type(item['formatted_location'].encode('utf-8'))))

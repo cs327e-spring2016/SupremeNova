@@ -66,6 +66,7 @@ def showArtist(cur, conn):
 		while eventList != None:
 
 			details = cur.fetchone()
+			print(details)
 
 
 			eventDate = details[1]
