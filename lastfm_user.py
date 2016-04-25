@@ -7,14 +7,17 @@ def anything (cur, conn):
 
 	notKeep = True
 	while notKeep: 
-		try: 
-			x = str(input("Enter an SQL query:"))
-			cur.execute(x)
-			print(cur.fetchone())
-			notKeep = False
+		try:
+			x = str(input("Press ENTER to quit OR input an SQL query:"))
+			if (x == ''):
+				break
+			else:
+				cur.execute(x)
+				print(cur.fetchone())
+				notKeep = False
 
 		except:
-			print ("not a number")
+			print ("Error: try again")
 
 	# print (x
 
@@ -43,14 +46,31 @@ def main ():
 	cur = conn.cursor()
 	cur.execute("USE supremenova")
 
-	anything(cur,conn)
+	# anything(cur,conn)
+	print("#########################################################")
+	print("Select from the following options or press ENTER to quit:")
+	print()
+	print("1: Make your own query")
+	print("2: Choose band from list")
+	print()
 
-	# showArtist(cur,conn)
+	start = str(input("Select option numer:"))
+
+	while ((start != "") and (start != "1") and (start != "2")):
+		print ("Wrong input: Try again.")
+		start = str(input("Select option numer:"))
+
+	if (start == ""):
+		pass
+	else: 
+		if (start == "1"):
+			anything(cur,conn)
+		elif(start == "2"):
+			
 
 
-	# name = str(input('Input artist number for infomation (press ENTER to quit):'))
 
-	# while name is not '':
-	# 	name = str(input('Input artist number for infomation (press ENTER to quit):'))
+
+
 
 main ()
