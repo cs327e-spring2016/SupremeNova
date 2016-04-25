@@ -8,12 +8,21 @@ def anything (cur, conn):
 	notKeep = True
 	while notKeep: 
 		try:
+			print()
 			x = str(input("Press ENTER to quit OR input an SQL query:"))
 			if (x == ''):
 				break
 			else:
 				cur.execute(x)
-				print(cur.fetchone())
+				# print(cur.description())
+				# print(cur.fetchone())
+				show = cur.fetchone()
+				print (show)
+
+				while (show != None):
+					print(cur.fetchone())
+					show = cur.fetchone()
+
 				notKeep = False
 
 		except:
@@ -48,17 +57,18 @@ def main ():
 
 	# anything(cur,conn)
 	print("#########################################################")
-	print("Select from the following options or press ENTER to quit:")
+	print("Select from the following options or press ENTER to quit")
 	print()
 	print("1: Make your own query")
 	print("2: Choose band from list")
 	print()
 
-	start = str(input("Select option numer:"))
+	start = str(input("Select option numer or press ENTER to quit:"))
 
 	while ((start != "") and (start != "1") and (start != "2")):
+		print()
 		print ("Wrong input: Try again.")
-		start = str(input("Select option numer:"))
+		start = str(input("Select option number or press ENTER to quit:"))
 
 	if (start == ""):
 		pass
@@ -66,7 +76,7 @@ def main ():
 		if (start == "1"):
 			anything(cur,conn)
 		elif(start == "2"):
-			
+			pass
 
 
 
