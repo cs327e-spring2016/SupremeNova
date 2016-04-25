@@ -218,19 +218,19 @@ def main():
 	#ERNIE: if you want to test using your own computer you will need to create a connection
 		#Make sure to also create the same database name (supremenova)
 		#Make sure to create the same tables with the same entities (sent picture on facebook)
-	#conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
+	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
 	# conn = pymysql.connect(host='127.0.0.1', user='root', passwd='erniestuff', db='mysql')
 
 	#Create a cursor
-	#cur = conn.cursor()
-	#cur.execute("USE supremenova")
+	cur = conn.cursor()
+	cur.execute("USE supremenova")
 
-	artistparse()
+	# artistparse()
 
-	# bandList('band2','rock', cur, conn)
-	# similarBands('band2', 'bandawesome', 'folk', cur, conn)
-	# bandList('bandawesome', 'folk', cur, conn)
-	# event('bandawesome', 'TX', 'Austin', '2017-08-10', '15:30:00', 'Emos', cur, conn)
+	bandList('band2','rock', cur, conn)
+	similarBands('band2', 'bandawesome', 'folk', cur, conn)
+	bandList('bandawesome', 'folk', cur, conn)
+	event('bandawesome', 'TX', 'Austin', '2017-08-10', '15:30:00', 'Emos', cur, conn)
 	# cur.execute("SELECT bandID FROM bandList WHERE bandName = 'passion pit' ")
 	# print("here is fetchone")
 	# x = cur.fetchone()
