@@ -1,6 +1,7 @@
 from urllib.request import urlopen
 import json
 import pymysql
+import sys
 
 #Description: This code is what the user will use to query through the database
 
@@ -58,7 +59,7 @@ def showArtist(cur, conn):
 	while ((favBand == None) and (type(name) != 'str')):
 
 		if (name == ''):
-			break
+			sys.exit()
 
 		else:
 			print ("band not in database. Try again.")
@@ -160,7 +161,7 @@ def main ():
 		start = str(input("Select option number or press ENTER to quit:"))
 
 	if (start == ""):
-		pass
+		sys.exit()
 	else: 
 		if (start == "1"):
 			anything(cur,conn)
