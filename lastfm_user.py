@@ -29,44 +29,72 @@ def anything (cur, conn):
 		except:
 			print ("Error: try again")
 
-	
 
-# User picks band from list to display events for the artist selected
-def showArtist(cur, conn):
-
+#Shows a list of artist in the database
+def helpShow(cur, conn):
+	print("#########################################")
+	print("List of bands on database")
 	cur.execute("SELECT bandName FROM bandList")
 	x = cur.fetchone()
 	count = 1
 	while x != None:
-		print (str(count)+ ":" + x[0])
+		print (str(count)+ ":  " + x[0])
 		count += 1
 		x = cur.fetchone()
 
 	print()
-	number = int(input("Select bandID: "))
-	while ((number > count) and (type(number) != 'int')):
-		print ("bandID of range")
-		number = int(input("Select bandID:"))
 
-	cur.execute("SELECT bandName FROM bandList WHERE bandID = %s", (str(number)))
+
+# User picks band from list to display events for the artist selected
+def showArtist(cur, conn):
+
+	print()
+	name = str(input("Select band name or press ENTER to quit: "))
+
+	cur.execute("SELECT bandName FROM bandList WHERE bandName = %s", (name))
 	favBand = cur.fetchone()
+	count = 0
+
+	while ((favBand == None) and (type(name) != 'str')):
+
+		if (name == ''):
+			break
+
+		else:
+			print ("band not in database. Try again.")
+			print()
+
+			if (name == "help"):
+				helpShow(cur,conn)
+
+			if (count > 3):
+				print ("Need help?")
+				print ("enter 'help' for a list of bands")
+			name = str(input("Select band name or press ENTER to quit: "))
+			cur.execute("SELECT bandName FROM bandList WHERE bandName = %s", (name))
+			favBand = cur.fetchone()
+
+			count += 1 
+
+
+
 	print()
 	print("#######################################################################")
-	print("Band selected is " + favBand[0])
+	print("Band selected: " + favBand[0])
 	print()
 
-	##########
-	cur.execute("SELECT bandName, date, time, venue, city, state FROM event WHERE bandID = %s", (str(number)))
+	#################
+	cur.execute("SELECT bandName, date, time, venue, city, state FROM event WHERE bandName = %s", (favBand))
 	eventList = cur.fetchone()
 
 	if eventList == None:
-		print ("No events for this band")
+		print ("No events found for this band/artist")
 	# print(cur.fetchone())
 	else:
 		while eventList != None:
 
 			details = cur.fetchone()
-			print(details)
+			# print(details)
 
 
 			eventDate = details[1]
@@ -117,14 +145,14 @@ def main ():
 	cur.execute("USE supremenova")
 
 	# anything(cur,conn)
-	print("#########################################################")
+	print("#######################################################################")
 	print("Select from the following options or press ENTER to quit")
 	print()
 	print("1: Make your own query")
 	print("2: Choose events from list of artist")
 	print()
 
-	start = str(input("Select option numer or press ENTER to quit:"))
+	start = str(input("Select option number or press ENTER to quit:"))
 
 	while ((start != "") and (start != "1") and (start != "2")):
 		print()
