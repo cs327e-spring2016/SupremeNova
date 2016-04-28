@@ -90,20 +90,6 @@ def showArtist(cur, conn):
 	eventInfo = cur.fetchone()
 	counter = 0 
 
-	# print (eventInfo)
-	# details = eventInfo[1]
-	# print (details)
-	# eventDate = eventInfo[1].strftime('%m/%d/%Y')
-	# eventTime = eventInfo[2]
-	# eventVenue = eventInfo[3]
-	# eventCity = eventInfo[4]
-	# eventState = eventInfo[5]
-
-	# print (eventDate)
-	# print (eventTime)
-	# print (eventVenue)
-	# print (eventCity + "," + eventState)
-
 	if ((eventInfo == None) and counter == 0):
 		print ("No events found for this artist")
 
@@ -122,56 +108,6 @@ def showArtist(cur, conn):
 
 		eventInfo = cur.fetchone()
 		count += 1
-
-
-
-	# 	counter += 1 
-	# 	eventInfo = cur.fetchone()
-	# if eventInfo == None:
-	# 	print ("No events found for this band/artist")
-	# # print(cur.fetchone())
-	# else:
-	# 	while eventInfo != None:
-
-	# 		details = cur.fetchone()
-	# 		# print(details)
-
-
-	# 		eventDate = details[1]
-
-	# 		if (eventDate == None):
-	# 			print ("nothing")
-	# 		else:
-	# 			try:
-	# 				if (details[1] == None):
-	# 					print ("No date listed")
-	# 				else:
-	# 					print (eventDate.strftime('%m/%d/%Y'))
-
-	# 				if (details[2] == None):
-	# 					print ("No time listed")
-	# 				else:
-	# 					print (str(details[2]))
-
-	# 				if (details[3]== None):
-	# 					print ("No venue listed")
-	# 				else:
-	# 					print ("venue: "+ details[3])
-
-	# 				if (details[4] == None and details[5] == None):
-	# 					print ("No location listed")
-	# 				else:
-	# 					print ("Location: " + details[4] + ", " + details[5])
-	# 				print ()
-	# 			except:
-	# 				print("some error")
-	# 				print()
-	# 			# continue
-	# 		eventInfo = cur.fetchone()
-
-
-	
-	# print ("show artist function")
 
 
 def showEvent(cur, conn):
