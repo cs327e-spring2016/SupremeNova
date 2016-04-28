@@ -2,6 +2,7 @@ from urllib.request import urlopen
 import json
 import pymysql
 import sys
+import time
 
 #Description: This code is what the user will use to query through the database
 
@@ -86,49 +87,87 @@ def showArtist(cur, conn):
 
 	#################
 	cur.execute("SELECT bandName, date, time, venue, city, state FROM event WHERE bandName = %s", (favBand))
-	eventList = cur.fetchone()
+	eventInfo = cur.fetchone()
+	counter = 0 
 
-	if eventList == None:
-		print ("No events found for this band/artist")
-	# print(cur.fetchone())
-	else:
-		while eventList != None:
+	# print (eventInfo)
+	# details = eventInfo[1]
+	# print (details)
+	# eventDate = eventInfo[1].strftime('%m/%d/%Y')
+	# eventTime = eventInfo[2]
+	# eventVenue = eventInfo[3]
+	# eventCity = eventInfo[4]
+	# eventState = eventInfo[5]
 
-			details = cur.fetchone()
-			# print(details)
+	# print (eventDate)
+	# print (eventTime)
+	# print (eventVenue)
+	# print (eventCity + "," + eventState)
+
+	if ((eventInfo == None) and counter == 0):
+		print ("No events found for this artist")
+
+	while (eventInfo != None):
+		eventDate = eventInfo[1].strftime('%m/%d/%Y')
+		eventTime = eventInfo[2]
+		eventVenue = eventInfo[3]
+		eventCity = eventInfo[4]
+		eventState = eventInfo[5]
+
+		print (eventDate)
+		print (eventTime)
+		print (eventVenue)
+		print (eventCity + "," + eventState)
+		print ()
+
+		eventInfo = cur.fetchone()
+		count += 1
 
 
-			eventDate = details[1]
 
-			if (eventDate == None):
-				print ("nothing")
-			else:
-				try:
-					if (details[1] == None):
-						print ("No date listed")
-					else:
-						print (eventDate.strftime('%m/%d/%Y'))
+	# 	counter += 1 
+	# 	eventInfo = cur.fetchone()
+	# if eventInfo == None:
+	# 	print ("No events found for this band/artist")
+	# # print(cur.fetchone())
+	# else:
+	# 	while eventInfo != None:
 
-					if (details[2] == None):
-						print ("No time listed")
-					else:
-						print (str(details[2]))
+	# 		details = cur.fetchone()
+	# 		# print(details)
 
-					if (details[3]== None):
-						print ("No venue listed")
-					else:
-						print ("venue: "+ details[3])
 
-					if (details[4] == None and details[5] == None):
-						print ("No location listed")
-					else:
-						print ("Location: " + details[4] + ", " + details[5])
-					print ()
-				except:
-					print("some error")
-					print()
-				# continue
-			eventList = cur.fetchone()
+	# 		eventDate = details[1]
+
+	# 		if (eventDate == None):
+	# 			print ("nothing")
+	# 		else:
+	# 			try:
+	# 				if (details[1] == None):
+	# 					print ("No date listed")
+	# 				else:
+	# 					print (eventDate.strftime('%m/%d/%Y'))
+
+	# 				if (details[2] == None):
+	# 					print ("No time listed")
+	# 				else:
+	# 					print (str(details[2]))
+
+	# 				if (details[3]== None):
+	# 					print ("No venue listed")
+	# 				else:
+	# 					print ("venue: "+ details[3])
+
+	# 				if (details[4] == None and details[5] == None):
+	# 					print ("No location listed")
+	# 				else:
+	# 					print ("Location: " + details[4] + ", " + details[5])
+	# 				print ()
+	# 			except:
+	# 				print("some error")
+	# 				print()
+	# 			# continue
+	# 		eventInfo = cur.fetchone()
 
 
 	
@@ -145,7 +184,8 @@ def main ():
 	cur = conn.cursor()
 	cur.execute("USE supremenova")
 
-	# anything(cur,conn)
+
+
 	print("#######################################################################")
 	print("Select from the following options or press ENTER to quit")
 	print()
@@ -160,13 +200,37 @@ def main ():
 		print ("Wrong input: Try again.")
 		start = str(input("Select option number or press ENTER to quit:"))
 
-	if (start == ""):
-		sys.exit()
-	else: 
-		if (start == "1"):
+	# if (start == ""):
+	# 	sys.exit()
+	# else: 
+	# 	if (start == "1"):
+	# 		anything(cur,conn)
+	# 	elif(start == "2"):
+	# 		showArtist(cur,conn)
+
+	while (True):
+		if (start == ""):
+			sys.exit()
+		elif (start == "1"):
 			anything(cur,conn)
 		elif(start == "2"):
 			showArtist(cur,conn)
+
+		time.sleep(3)
+		print("#######################################################################")
+		print("Select from the following options or press ENTER to quit")
+		print()
+		print("1: Make your own query")
+		print("2: Choose events from list of artist")
+		print()
+
+		start = str(input("Select option number or press ENTER to quit:"))
+
+		while ((start != "") and (start != "1") and (start != "2")):
+			print()
+			print ("Wrong input: Try again.")
+			start = str(input("Select option number or press ENTER to quit:"))
+
 
 
 
