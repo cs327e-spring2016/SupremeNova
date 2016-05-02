@@ -103,30 +103,33 @@ def showArtist(cur, conn):
 		try: 
 			print (eventDate)
 		except:
-			print ("Error printing date")
+			print ("ERROR PRINTING DATE")
 
 		try:
 			print (eventTime)
 		except:
-			print ("Error printing time")
+			print ("ERROR PRINTING TIME")
 
 		try:
 			print (eventVenue)
 		except:
-			print ("Error printing venue")
+			print ("ERROR PRINTING VENUE")
 
 		try:
 			print (eventCity + "," + eventState)
 			print ()
 
 		except:
-			print ("Error printing location")
+			print ("ERROR PRINTING LOCATION")
 			print ()
 
 		eventInfo = cur.fetchone()
-		count += 1
+		counter += 1
 
-	print (str(count) + " events found")
+	if (counter == 0):
+		pass 
+	else:
+		print (str(counter) + " events found")
 
 
 #User picks events based on city and state
@@ -138,9 +141,18 @@ def showEvent(cur, conn):
 
 	while not check:
 		city = str(input("Select CITY or press ENTER to quit: "))
+
+		if (city == ""):
+			sys.exit()
+
 		state = str(input("Select STATE (ex. TX): "))
+
 		if (len(state) == 2):
 			check = True 
+			break
+
+		print("Incorrect input: Try again")
+		print()
 
 	print()
 	print("#######################################################################")
@@ -150,7 +162,7 @@ def showEvent(cur, conn):
 	#################
 	cur.execute("SELECT bandName, date, time, venue, city, state FROM event WHERE city = %s AND state = %s", (city, state))
 	eventInfo = cur.fetchone()
-	count = 0 
+	counter = 0 
 
 	if ((eventInfo == None) and counter == 0):
 		print ("No events found.")
@@ -166,35 +178,125 @@ def showEvent(cur, conn):
 		try:
 			print(eventName)
 		except:
-			print("Error printing Name")
+			print("ERROR PRINTING NAME")
 
 		try: 
 			print (eventDate)
 		except:
-			print ("Error printing date")
+			print ("ERROR PRINTING DATE")
 
 		try:
 			print (eventTime)
 		except:
-			print ("Error printing time")
+			print ("ERROR PRINTING TIME")
 
 		try:
 			print (eventVenue)
 		except:
-			print ("Error printing venue")
+			print ("ERROR PRINTING VENUE")
 
 		try:
 			print (eventCity + "," + eventState)
 			print ()
 
 		except:
-			print ("Error printing location")
+			print ("ERROR PRINTING LOCATION")
 			print ()
 
 		eventInfo = cur.fetchone()
-		count += 1
+		counter += 1
 
-	print (str(count) + " events found")
+	if (counter == 0):
+		pass 
+	else:
+		print (str(counter) + " events found")
+
+
+def showDate (cur, conn):
+	print()
+
+	check = False 
+
+	while not check:
+		date = str(input("Select date (MM/DD/YYYY) or press ENTER to quit: "))
+
+		month = int(date[0:2])
+		day = int(date[3:5])
+		year = int(date[6:10])
+		
+
+		if (date == ""):
+			sys.exit()
+
+		if ((len(date) == 10) and (date[2] == "/") and (date[5] == "/") and (month < 13) and (day < 32) and (year > 2015)):
+			check = True 
+			break
+
+		print("Incorrect input: Try again")
+		print()
+
+	print()
+	print("#######################################################################")
+	print("Date selected: " + date)
+	print()
+
+	year = date[6:10]
+	month = date[0:2]
+	day = date[3:5]
+
+	newDate = year+"-"+month+"-"+day
+
+	################
+	cur.execute("SELECT bandName, date, time, venue, city, state FROM event WHERE date = %s", (newDate))
+	eventInfo = cur.fetchone()
+	counter = 0 
+
+	if ((eventInfo == None) and counter == 0):
+		print ("No events found.")
+
+	while (eventInfo != None):
+		eventName = eventInfo[0]
+		eventDate = eventInfo[1].strftime('%m/%d/%Y')
+		eventTime = eventInfo[2]
+		eventVenue = eventInfo[3]
+		eventCity = eventInfo[4]
+		eventState = eventInfo[5]
+
+		try:
+			print(eventName)
+		except:
+			print("ERROR PRINTING NAME")
+
+		try: 
+			print (eventDate)
+		except:
+			print ("ERROR PRINTING DATE")
+
+		try:
+			print (eventTime)
+		except:
+			print ("ERROR PRINTING TIME")
+
+		try:
+			print (eventVenue)
+		except:
+			print ("ERROR PRINTING VENUE")
+
+		try:
+			print (eventCity + "," + eventState)
+			print ()
+
+		except:
+			print ("ERROR PRINTING LOCATION")
+			print ()
+
+		eventInfo = cur.fetchone()
+		counter += 1
+
+	if (counter == 0):
+		pass 
+	else:
+		print (str(counter) + " events found")
 	
 
 def main ():
@@ -210,7 +312,7 @@ def main ():
 	print()
 	print("1: Choose events by city")
 	print("2: Choose events by artist")
-	print("3: Something that ernie implements")
+	print("3: Choose events by date")
 	print()
 
 	start = str(input("Select option number or press ENTER to quit:"))
@@ -228,7 +330,7 @@ def main ():
 		elif(start == "2"):
 			showArtist(cur,conn)
 		elif(start == "3"):
-			print ("not added yet")
+			showDate(cur,conn)
 
 		time.sleep(3)
 		print("#######################################################################")
@@ -236,7 +338,7 @@ def main ():
 		print()
 		print("1: Choose events by city")
 		print("2: Choose events by artist")
-		print("3: Something that ernie implements")
+		print("3: Choose events by date")
 		print()
 
 		start = str(input("Select option number or press ENTER to quit:"))
