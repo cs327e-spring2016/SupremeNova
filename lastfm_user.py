@@ -100,11 +100,16 @@ def showArtist(cur, conn):
 		eventCity = eventInfo[4]
 		eventState = eventInfo[5]
 
-		print (eventDate)
-		print (eventTime)
-		print (eventVenue)
-		print (eventCity + "," + eventState)
-		print ()
+		try: 
+			print (eventDate)
+			print (eventTime)
+			print (eventVenue)
+			print (eventCity + "," + eventState)
+			print ()
+
+		except:
+			print ("Error printing")
+			print ()
 
 		eventInfo = cur.fetchone()
 		count += 1
@@ -127,11 +132,12 @@ def main ():
 	print()
 	print("1: Make your own query")
 	print("2: Choose events from list of artist")
+	print("3: Something that ernie implements")
 	print()
 
 	start = str(input("Select option number or press ENTER to quit:"))
 
-	while ((start != "") and (start != "1") and (start != "2")):
+	while ((start != "") and (start != "1") and (start != "2") and (start != "3")):
 		print()
 		print ("Wrong input: Try again.")
 		start = str(input("Select option number or press ENTER to quit:"))
@@ -151,6 +157,8 @@ def main ():
 			anything(cur,conn)
 		elif(start == "2"):
 			showArtist(cur,conn)
+		elif(start == "3"):
+			print ("not added yet")
 
 		time.sleep(3)
 		print("#######################################################################")
@@ -158,11 +166,12 @@ def main ():
 		print()
 		print("1: Make your own query")
 		print("2: Choose events from list of artist")
+		print("3: Something that ernie implements")
 		print()
 
 		start = str(input("Select option number or press ENTER to quit:"))
 
-		while ((start != "") and (start != "1") and (start != "2")):
+		while ((start != "") and (start != "1") and (start != "2") and (start != "3")):
 			print()
 			print ("Wrong input: Try again.")
 			start = str(input("Select option number or press ENTER to quit:"))
