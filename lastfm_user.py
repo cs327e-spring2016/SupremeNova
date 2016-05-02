@@ -212,6 +212,7 @@ def showEvent(cur, conn):
 		print (str(counter) + " events found")
 
 
+#User picks event by date 
 def showDate (cur, conn):
 	print()
 
@@ -297,8 +298,9 @@ def showDate (cur, conn):
 		pass 
 	else:
 		print (str(counter) + " events found")
-	
 
+	
+#Interacts with the user to select what to do first 
 def main ():
 
 	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
