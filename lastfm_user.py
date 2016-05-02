@@ -102,21 +102,99 @@ def showArtist(cur, conn):
 
 		try: 
 			print (eventDate)
+		except:
+			print ("Error printing date")
+
+		try:
 			print (eventTime)
+		except:
+			print ("Error printing time")
+
+		try:
 			print (eventVenue)
+		except:
+			print ("Error printing venue")
+
+		try:
 			print (eventCity + "," + eventState)
 			print ()
 
 		except:
-			print ("Error printing")
+			print ("Error printing location")
 			print ()
 
 		eventInfo = cur.fetchone()
 		count += 1
 
+	print (str(count) + " events found")
 
+
+#User picks events based on city and state
 def showEvent(cur, conn):
-	pass
+
+	print()
+
+	check = False 
+
+	while not check:
+		city = str(input("Select CITY or press ENTER to quit: "))
+		state = str(input("Select STATE (ex. TX): "))
+		if (len(state) == 2):
+			check = True 
+
+	print()
+	print("#######################################################################")
+	print("City selected: " + city +"," + state)
+	print()
+
+	#################
+	cur.execute("SELECT bandName, date, time, venue, city, state FROM event WHERE city = %s AND state = %s", (city, state))
+	eventInfo = cur.fetchone()
+	count = 0 
+
+	if ((eventInfo == None) and counter == 0):
+		print ("No events found.")
+
+	while (eventInfo != None):
+		eventName = eventInfo[0]
+		eventDate = eventInfo[1].strftime('%m/%d/%Y')
+		eventTime = eventInfo[2]
+		eventVenue = eventInfo[3]
+		eventCity = eventInfo[4]
+		eventState = eventInfo[5]
+
+		try:
+			print(eventName)
+		except:
+			print("Error printing Name")
+
+		try: 
+			print (eventDate)
+		except:
+			print ("Error printing date")
+
+		try:
+			print (eventTime)
+		except:
+			print ("Error printing time")
+
+		try:
+			print (eventVenue)
+		except:
+			print ("Error printing venue")
+
+		try:
+			print (eventCity + "," + eventState)
+			print ()
+
+		except:
+			print ("Error printing location")
+			print ()
+
+		eventInfo = cur.fetchone()
+		count += 1
+
+	print (str(count) + " events found")
 	
 
 def main ():
@@ -130,8 +208,8 @@ def main ():
 	print("#######################################################################")
 	print("Select from the following options or press ENTER to quit")
 	print()
-	print("1: Make your own query")
-	print("2: Choose events from list of artist")
+	print("1: Choose events by city")
+	print("2: Choose events by artist")
 	print("3: Something that ernie implements")
 	print()
 
@@ -142,19 +220,11 @@ def main ():
 		print ("Wrong input: Try again.")
 		start = str(input("Select option number or press ENTER to quit:"))
 
-	# if (start == ""):
-	# 	sys.exit()
-	# else: 
-	# 	if (start == "1"):
-	# 		anything(cur,conn)
-	# 	elif(start == "2"):
-	# 		showArtist(cur,conn)
-
 	while (True):
 		if (start == ""):
 			sys.exit()
 		elif (start == "1"):
-			anything(cur,conn)
+			showEvent(cur,conn)
 		elif(start == "2"):
 			showArtist(cur,conn)
 		elif(start == "3"):
@@ -164,8 +234,8 @@ def main ():
 		print("#######################################################################")
 		print("Select from the following options or press ENTER to quit")
 		print()
-		print("1: Make your own query")
-		print("2: Choose events from list of artist")
+		print("1: Choose events by city")
+		print("2: Choose events by artist")
 		print("3: Something that ernie implements")
 		print()
 
@@ -175,11 +245,6 @@ def main ():
 			print()
 			print ("Wrong input: Try again.")
 			start = str(input("Select option number or press ENTER to quit:"))
-
-
-
-
-
 
 
 main ()
