@@ -100,7 +100,7 @@ def event(oriBand, state, city, date, time, venue, cur, conn):
 	cur.connection.commit()
 	
 
-#def artistparse(conn, cur):
+#def artistparse():
 def artistparse(cur, conn):
 
 
@@ -140,10 +140,17 @@ def artistparse(cur, conn):
 
 		
 		# for function bandList for the original band
+		
 		if len(lfm_genre_json) != 0:
-			bandList(str(unquote(name)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
+			try:
+				bandList(str(unquote(name)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
+			except:
+				print("Error could not add")
 		else:
-			bandList(str(unquote(name)), 'None', cur, conn)
+			try:
+				bandList(str(unquote(name)), 'None', cur, conn)
+			except:
+				print("Error could not add")
 		
 
 		# to check if no artist is empty 
@@ -162,7 +169,7 @@ def artistparse(cur, conn):
 			# adds the last artist parsing through list
 			artistList.append(artistLast)
 			print(artistList)
-			print()
+			#print()
 
 			# Scraping the Bandsintown API
 			i = 0
@@ -180,11 +187,16 @@ def artistparse(cur, conn):
 			for band in artistList:
 				bit_url = 'http://api.bandsintown.com/artists//events.json?api_version=2.0&app_id=BandAdvocate'
 				bit_url = bit_url[:35] + str(band) + bit_url[35:]
-				response2 = urlopen(bit_url)
+				try:
+					response2 = urlopen(bit_url)
+					# convert bytes to string type and string type to dict
+					bit_string = response2.read().decode('utf-8')
+					bit_json_obj = json.loads(bit_string)
+				except:
+					print("Unable to Parse BandsinTown")
 
-				# convert bytes to string type and string type to dict
-				bit_string = response2.read().decode('utf-8')
-				bit_json_obj = json.loads(bit_string)
+
+				
 
 
 				# Parses through all of the artists venues, formatted location, formatted datetime
@@ -194,26 +206,39 @@ def artistparse(cur, conn):
 				# calls the last.fm GENRE API 
 				lastfm_genre = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&artist=&api_key=809d15fdb258f92ffd60f361dcf84feb&format=json'
 				lastfm_genre = lastfm_genre[:66] + str(band) + lastfm_genre[66:]
-				resp_genre = urlopen(lastfm_genre)
+				try:
+					resp_genre = urlopen(lastfm_genre)
+				except: 
+					print("Unable to Parse LastFM")
 
 				# converts bytes to string type and string type to dict
 				lfm_genre = resp_genre.read().decode('utf-8')
-				lfm_genre_json = json.loads(lfm_genre)
+				try:
+					lfm_genre_json = json.loads(lfm_genre)
+				except:
+					print("Unable to Parse LastFM")
 
 
 				# for function bandList for the original band
+				
 				if len(lfm_genre_json) != 0:
 					#print(str(lfm_genre_json['toptags']['tag'][0]['name']))
-					bandList(str(unquote(band)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
-					similarBands(str(unquote(name)), str(unquote(band)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
+					try:
+						bandList(str(unquote(band)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
+						similarBands(str(unquote(name)), str(unquote(band)), str(lfm_genre_json['toptags']['tag'][0]['name']), cur, conn)
+					except:
+						pass
 				else:
-					bandList(str(unquote(band)), 'None', cur, conn)
-					similarBands(str(unquote(name)), str(unquote(band)), 'None', cur, conn)
-					print("found nothing")
+					#bandList(str(unquote(band)), 'None', cur, conn)
+					try:
+						similarBands(str(unquote(name)), str(unquote(band)), 'None', cur, conn)
+					except:
+						pass
 				
+
 				if len(bit_json_obj) != 0:
 					for item in bit_json_obj :
-						print()
+						#print()
 
 						#print city
 						formatedLocation = item['formatted_location']
@@ -239,7 +264,10 @@ def artistparse(cur, conn):
 						# print(date)
 						# print(time)
 						# print()
-						event(unquote(band), state, city, date, time, venue, cur, conn)
+						try:
+							event(unquote(band), state, city, date, time, venue, cur, conn)
+						except:
+							pass
 						# event(str(unquote(band)), str(state), str(city), str(date), str(time), str(item['venue']['name']), cur, conn)
 
 						# print(str(type(item['formatted_location'].encode('utf-8'))))
@@ -249,7 +277,7 @@ def artistparse(cur, conn):
 						
 				else:
 					print('There are no events for this artist')
-					print()
+					
 			
 
 
@@ -266,23 +294,23 @@ def artistparse(cur, conn):
 def main():
 
 	#establish a connection with Herbert's mysql (only work's with Herbert)
-	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
+	#conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
+	#artistparse()
 	
-	# conn = pymysql.connect(host='127.0.0.1', user='root', passwd='erniestuff', db='mysql')
+	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='xyz', db='mysql')
 
 	#Create a cursor
 	cur = conn.cursor()
 	cur.execute("USE supremenova")
-	
+
 
 	#Populate the database based on user input
 	artistparse(cur, conn)
-	
 
 	#Close connection
 	cur.close()
 	conn.close()
-
+	
 
 main()
 
