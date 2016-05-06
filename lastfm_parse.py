@@ -294,10 +294,10 @@ def artistparse(cur, conn):
 def main():
 
 	#establish a connection with Herbert's mysql (only work's with Herbert)
-	#conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
+	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
 	#artistparse()
 	
-	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='xyz', db='mysql')
+	# conn = pymysql.connect(host='127.0.0.1', user='root', passwd='xyz', db='mysql')
 
 	#Create a cursor
 	cur = conn.cursor()

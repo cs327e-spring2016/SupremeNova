@@ -221,13 +221,13 @@ def showDate (cur, conn):
 	while not check:
 		date = str(input("Select date (MM/DD/YYYY) or press ENTER to quit: "))
 
+		if (date == ""):
+			sys.exit()
+
 		month = int(date[0:2])
 		day = int(date[3:5])
 		year = int(date[6:10])
 		
-
-		if (date == ""):
-			sys.exit()
 
 		if ((len(date) == 10) and (date[2] == "/") and (date[5] == "/") and (month < 13) and (day < 32) and (year > 2015)):
 			check = True 
