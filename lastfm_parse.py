@@ -5,7 +5,12 @@ from urllib.parse import quote
 from urllib.parse import unquote
 
 
-#Description: This code is used to populate the database (Herbert's computer) using a user input on what band they want
+
+#Description:This code is used to scrape Last.FM's and BandsInTown's APIs to populate the
+#MySQL database (Herbert's computer) using a user input on what band they want
+#
+#For More Information go to Github:
+#https://github.com/cs327e-spring2016/SupremeNova
 
 
 
@@ -100,8 +105,8 @@ def event(oriBand, state, city, date, time, venue, cur, conn):
 	cur.connection.commit()
 	
 
-#def artistparse():
-def artistparse(cur, conn):
+def artistparse():
+#def artistparse(cur, conn):
 
 
 	# user inputs artist name
@@ -294,22 +299,29 @@ def artistparse(cur, conn):
 def main():
 
 	#establish a connection with Herbert's mysql (only work's with Herbert)
+<<<<<<< Updated upstream
 	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
 	#artistparse()
 	
 	# conn = pymysql.connect(host='127.0.0.1', user='root', passwd='xyz', db='mysql')
+=======
+	#conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
+	artistparse()
+	
+	#conn = pymysql.connect(host='127.0.0.1', user='root', passwd='xyz', db='mysql')
+>>>>>>> Stashed changes
 
 	#Create a cursor
-	cur = conn.cursor()
-	cur.execute("USE supremenova")
+	#cur = conn.cursor()
+	#cur.execute("USE supremenova")
 
 
 	#Populate the database based on user input
-	artistparse(cur, conn)
+	#artistparse(cur, conn)
 
 	#Close connection
-	cur.close()
-	conn.close()
+	#cur.close()
+	#conn.close()
 	
 
 main()
