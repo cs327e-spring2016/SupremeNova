@@ -6,10 +6,11 @@ from urllib.parse import unquote
 
 
 
-#Description:This code is used to scrape Last.FM's and BandsInTown's APIs to populate the
-#MySQL database (Herbert's computer) using a user input on what band they want
-#
-#For More Information go to Github:
+#Description: User Input is used to find a similar musical artists events based on
+#Last.FM's and BandsInTown's APIs. This data is used to populate MySQL database 
+#(Herbert's computer) using a user input on what band they want.
+# 
+#For more information go to Github:
 #https://github.com/cs327e-spring2016/SupremeNova
 
 
@@ -299,17 +300,16 @@ def artistparse():
 def main():
 
 	#establish a connection with Herbert's mysql (only work's with Herbert)
-<<<<<<< Updated upstream
-	conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
+
+	#conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
 	#artistparse()
 	
 	# conn = pymysql.connect(host='127.0.0.1', user='root', passwd='xyz', db='mysql')
-=======
+
 	#conn = pymysql.connect(host='127.0.0.1', user='root', passwd='2SANSALVA', db='mysql')
 	artistparse()
 	
 	#conn = pymysql.connect(host='127.0.0.1', user='root', passwd='xyz', db='mysql')
->>>>>>> Stashed changes
 
 	#Create a cursor
 	#cur = conn.cursor()
